@@ -2,22 +2,28 @@
 
 {% load static %}
 
+{% load mathfilters %}
+
 {% block content %}
 
 <main class="pt-5">
   <div class="container">
     <h1 class="h5"> Shopping cart </h1>
     <hr>
+    {% for item in cart %}
+    {% with product=item.product %}
     <br>
     <div class="row mb-4 border product-item">
       <div class="col-md-3 col-lg-2 order-md-first bg-light">
-        <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src=""> <!-- Product image -->
+        <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src="{{ product.image.url }}">
+        <!-- Product image -->
       </div>
       <div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
-        <a href="" class="text-decoration-none text-reset">
+        <a href="{{ product.get_absolute_url }}" class="text-info  text-decoration-none">
           <!-- Product get absolute url -->
           <h1 class="h5 pt-2">
             <!-- Product title -->
+            {{ product.title }}
           </h1>
         </a>
         <div class="border">
@@ -25,7 +31,9 @@
             <div class="row p-3">
               <div class="col-6"> Product </div>
               <div class="col-6 text-end"><span class="h6 fw-bold">$
-                  <!-- Product price --> </span></div>
+                  <!-- Product price -->
+                  {{ product.price|mul:item.qty }}
+                </span></div>
             </div>
           </div>
           <div class="col">
@@ -56,13 +64,19 @@
         </div>
       </div>
     </div>
+    {% endwith %}
+    {% endfor %}
     <div class="col-12 text-end">
       <div class="h6 fw-bold"> Sub total: $ <div id="subtotal" class="d-inline-flex">
           <!-- cart.get_total -->
+          {{ cart.get_total }}
         </div>
       </div>
     </div>
   </div>
+
+  <br>
+  <br>
 
 </main>
 
