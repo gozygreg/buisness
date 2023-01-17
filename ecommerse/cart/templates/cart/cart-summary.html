@@ -41,7 +41,7 @@
               <div class="col-12">
                 <label for="select">Qty</label>
                 &nbsp;
-                <select id="">
+                <select id="select{{ product.id }}">
                   <option selected>
                     {{item.qty}}
                   </option>
@@ -51,11 +51,12 @@
                   <option value="">4</option>
                 </select>
                 <br> <br>
-                <button type="button" id="update-button" class="btn btn-primary btn-sm update-button">
+                <button type="button" data-index="{{ product.id }}" class="btn btn-primary btn-sm update-button">
                   Update
                 </button>
                 &nbsp;
-                <button type="button" id="delete-button" class="btn btn-danger btn-sm delete-button">
+                <button type="button" data-index="{{ product.id }}"
+                  class="btn btn-danger btn-sm delete-button delete-button">
                   Delete
                 </button>
               </div>
@@ -67,7 +68,7 @@
     {% endwith %}
     {% endfor %}
     <div class="col-12 text-end">
-      <div class="h6 fw-bold"> Sub total: $ <div id="subtotal" class="d-inline-flex">
+      <div class="h6 fw-bold"> Sub total: $ <div id="total" class="d-inline-flex">
           <!-- cart.get_total -->
           {{ cart.get_total }}
         </div>
@@ -79,5 +80,57 @@
   <br>
 
 </main>
+
+<script>
+  // delete button 
+  $(document).on('click', '.delete-button', function (e) {
+    e.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '{% url "cart-delete" %}',
+      data: {
+        product_id: $(this).data('index'),
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        action: 'post'
+      },
+
+      success: function (json) {
+        // console.log(json)
+        location.reload();
+        document.getElementById("cart-qty").textContent = json.qty
+        document.getElementById("total").textContent = json.total
+      },
+      error: function (xhr, errmsg, err) {
+
+      },
+    });
+  })
+
+  // Update button 
+  $(document).on('click', '.update-button', function (e) {
+    e.preventDefault();
+    var theproductid = $(this).data('index');
+    $.ajax({
+      type: 'POST',
+      url: '{% url "cart-update" %}',
+      data: {
+        product_id: $(this).data('index'),
+        product_quantity: $('#select' + theproductid + ' option:selected').text(),
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        action: 'post'
+      },
+
+      success: function (json) {
+        // console.log(json)
+        location.reload();
+        document.getElementById("cart-qty").textContent = json.qty
+        document.getElementById("total").textContent = json.total
+      },
+      error: function (xhr, errmsg, err) {
+
+      },
+    });
+  })
+</script>
 
 {% endblock %}
