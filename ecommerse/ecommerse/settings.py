@@ -140,4 +140,4 @@ MEDIA_ROOT = BASE_DIR / 'static/media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = 'django.core.mail.backend.console.Emailbackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

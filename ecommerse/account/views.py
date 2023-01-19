@@ -17,7 +17,7 @@ def register(request):
             user.is_active = False
             user.save()
 
-            # email verificatio setup
+            # email verification setup
             current_site = get_current_site(request)
             subject = 'Account verification email'
             message = render_to_string('account/registration/email-verification.html', {
