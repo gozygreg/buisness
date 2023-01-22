@@ -6,6 +6,8 @@ from .token import user_tokenizer_generate
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.core.mail import EmailMessage
+from django.conf import settings
 
 
 def register(request):
@@ -26,8 +28,9 @@ def register(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': user_tokenizer_generate.make_token(user),
             })
-            user.email_user(subject=subject, message=message)
+            EmailMessage(subject=subject, body=message, from_email=settings.EMAIL_FROM_USER, to=[user.email])
             return redirect('email-verification-sent')
+
     context = {'form': form}
 
     return render(request, 'account/registration/register.html', context=context)
