@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from .forms import CreateUserForm
+from .forms import CreateUserForm, LoginForm
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from .token import user_tokenizer_generate
@@ -8,6 +8,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
 
 
 def register(request):
@@ -63,3 +64,24 @@ def email_verification_success(request):
 
 def email_verification_failed(request):
     return render(request, 'account/registration/email-verification-failed.html')
+
+
+def my_login(request):
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.post.GET('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                auth.login(request, user)
+                return redirect("account/dashboard")
+    context = {'form': form}
+    return render(request, 'account/my-login.html', context=context)
+
+# Logout
+
+
+def dashboard(request):
+    return render(request, 'account/dashboard.html')
