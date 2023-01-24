@@ -27,7 +27,6 @@ class CreateUserForm(UserCreationForm):
         return email
 
 
-
 # Login form
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput())
