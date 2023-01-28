@@ -92,7 +92,15 @@ def my_login(request):
 # Logout
 @login_required(login_url='my-login')
 def user_logout(request):
-    auth.logout(request)
+    try:
+        for key in list(request.session.keys()):
+            if key == 'session_key':
+                continue
+            else:
+                del request.session[key]
+    except KeyError:
+        pass
+    messages.success(request, "Logout success")
     return redirect("store")
 
 
@@ -109,6 +117,7 @@ def profile_management(request):
         user_form = UpdateUserForm(request.POST, instance=request.user)
         if user_form.is_valid():
             user_form.save()
+            messages.info(request, "Your account has been updated")
             return redirect('dashboard')
     context = {'user_form': user_form}
     return render(request, 'account/profile-management.html', context=context)
@@ -119,5 +128,6 @@ def delete_account(request):
     user = User.objects.get(id=request.user.id)
     if request.method == 'POST':
         user.delete()
+        messages.error(request, "Your have deleted your account")
         return redirect('store')
     return render(request, 'account/delete-account.html')
