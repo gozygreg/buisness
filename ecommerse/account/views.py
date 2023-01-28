@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from .forms import CreateUserForm, LoginForm, UpdateUserForm
-from payment.forms import ShippingForm
+from payment.form import ShippingForm
 from payment.models import ShippingAddress
 from django.contrib.auth.models import User
 # from django.contrib.sites.shortcuts import get_current_site
@@ -137,10 +137,10 @@ def delete_account(request):
 
 # Shipping view
 @login_required(login_url='my-login')
-def manage_shipping(reqquest):
+def manage_shipping(request):
     try:
         # Account user with shipment information
-        shipping = ShippingAddress.objects.get(user=reqquest.user.id)
+        shipping = ShippingAddress.objects.get(user=request.user.id)
     except ShippingAddress.DoesNotExist:
         # Account user with no shipment information
         shipping = None
