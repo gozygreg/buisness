@@ -50,7 +50,7 @@
                 </div>
                 <br>
                 <div class="form-field">
-                    <input class="form-control" id="zipcode" type="text" placeholder="postcode (Optional)"
+                    <input class="form-control" id="postcode" type="text" placeholder="postcode (Optional)"
                         autocomplete="off" value="{{ shipping.postcode }}">
                 </div>
             </div>
@@ -64,15 +64,35 @@
 </body>
 
 <!-- Ajax integration -->
-
-
-
 <script>
+    // Complete checkout
+    $(document).on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "complete-order" %}',
+            data: {
+                name: $('#name').val(),
+                email: $('#email').val(),
+                address1: $('#address1').val(),
+                address2: $('#address2').val(),
+                city: $('#city').val(),
+                state: $('#state').val(),
+                postcode: $('#postcode').val(),
 
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                action: 'post'
+            },
 
+            success: function (json) {
+                // console.log(json)
 
+            },
+            error: function (xhr, errmsg, err) {
 
-
+            },
+        });
+    })
 </script>
 
 
