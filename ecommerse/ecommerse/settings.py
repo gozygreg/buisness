@@ -151,3 +151,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # EMAIL_HOST_USER = 'gregcoder16@gmail.com'  # Enter your Gmail address
 # EMAIL_HOST_PASSWORD = 'dmlciclinpkrzfsf'  # Enter your app password
+
+# STRIPE public key
+STRIPE_PUBLIC_KEY = 'pk_test_51MX7x2AGFYQzGfhGw5CWd6b1MlJ3C11whROQsiK8AcK31fXPYq35F7kgNlZBwE8wRpjIAyrYjeLwOgYqY6YnRsEK00JcAoHlHd'
+
+# STRIPE private key
+STRIPE_PRIVATE_KEY = 'sk_test_51MX7x2AGFYQzGfhG7YycEtFDazgFfoghPnW4QezrAvZVDAgibjmROrGeLR2Yo08YYvpcQ5GBAgerW49TUmq8SBkO00V3grUea8'
