@@ -22,6 +22,8 @@ urlpatterns = [
     path('delete-account', views.delete_account, name='delete-account'),
 
     # Manage shipping url
-    path('manage-shipping', views.manage_shipping, name='manage-shipping')
+    path('manage-shipping', views.manage_shipping, name='manage-shipping'),
 
+    # Track order url
+    path('track-orders', views.track_orders, name='track-orders')
 ]
